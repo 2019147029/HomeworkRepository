@@ -1,11 +1,9 @@
-/* 전체 기본 스타일 */
 body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
 }
 
-/* header 설정 */
 .header {
     width: 1020px;
     margin: 0 auto;
@@ -16,7 +14,6 @@ body {
     align-items: center;
 }
 
-/* header 텍스트 슬라이딩 */
 .header-text-wrapper {
     width: 100%;
     overflow: hidden;
@@ -43,7 +40,6 @@ body {
     }
 }
 
-/* 네비게이션 스타일 */
 .nav {
     width: 100%;
     display: flex;
@@ -68,25 +64,16 @@ body {
     background-color: #555;
 }
 
-/* 메인 컨테이너 설정 */
 .main-container {
     width: 1020px;
     margin: 20px auto;
 }
 
-/* Movies 섹션 */
 .movies-section {
     display: flex;
     flex-direction: column;
     margin-bottom: 40px;
 }
-
-.movie-group {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
-}
-
 
 .movies {
     display: flex;
@@ -94,9 +81,17 @@ body {
     justify-content: space-around;
 }
 
+.movie-group {
+    display: flex;
+    height: 400px;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    border: 2px solid black;
+}
+
 .movie {
     position: relative;
-    width: 230px;
+    width: 100px;
     margin: 10px;
     overflow: hidden;
 }
@@ -135,6 +130,18 @@ body {
     flex-direction: column;
 }
 
+.about-section h2 {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid black;
+}
+
+.about-section p {
+    column-count: 2;
+    column-gap: 40px;
+    column-rule: 1px solid gray;
+}
+
 /* 회원가입, 로그인 폼 스타일 */
 form {
     display: flex;
@@ -162,11 +169,22 @@ button:hover {
     background-color: #45a049;
 }
 
-/* 미디어 쿼리 - 3단계 반응형 */
 @media (max-width: 480px) {
-    .header, .main-container {
+    .nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .about-section p {
+        column-count: 1;
+        column-rule: none;
+    }
+
+    .header, .main-container,
+    .movies-section, .about-section {
         width: 100%;
         padding: 0 10px;
+        box-sizing: border-box;
     }
 
     .movies {
@@ -176,13 +194,36 @@ button:hover {
 }
 
 @media (min-width: 481px) and (max-width: 800px) {
-    .header, .main-container {
+    .header, .main-container,
+    .movies-section, .about-section {
         width: 100%;
-        padding: 0 20px;
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+
+    .nav {
+        flex-direction: column;
+        align-items: center;
     }
 
     .movies {
-        justify-content: space-between;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    .movie-group {
+        width: 45%; /* 한 줄에 2개 들어오게 */
+        margin-bottom: 20px;
+        height: auto;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .about-section p {
+        column-count: 1;
+        column-rule: none;
     }
 }
 
