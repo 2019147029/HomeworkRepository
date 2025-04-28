@@ -1,0 +1,237 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    width: 1020px;
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header-text-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    height: 100px;
+}
+
+.header-text {
+    white-space: nowrap;
+    font-size: 24px;
+    font-weight: bold;
+    position: absolute;
+    top: 30px;
+    left: 1020px;
+    animation-name: slideIn;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes slideIn {
+    0% {
+        left: 1020px;
+    }
+    100% {
+        left: 0;
+    }
+}
+
+.nav {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    background-color: #333;
+    margin-top: 10px;
+}
+
+.nav a {
+    color: white;
+    padding: 14px 20px;
+    text-decoration: none;
+    text-align: center;
+}
+
+.nav a.active {
+    background-color: #4CAF50;
+}
+
+.nav a:hover {
+    background-color: #555;
+}
+
+.main-container {
+    width: 1020px;
+    margin: 20px auto;
+}
+
+.movies-section {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 40px;
+}
+
+.movies {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.movie-group {
+    display: flex;
+    height: 400px;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    border: 2px solid black;
+}
+
+.movie {
+    position: relative;
+    width: 100px;
+    margin: 10px;
+    overflow: hidden;
+}
+
+.movie img {
+    width: 100%;
+    transition: transform 2s;
+}
+
+/* Hover 시 이미지 확대 */
+.movie:hover img {
+    transform: scale(1.2);
+}
+
+/* Hover 시 제목 표시 */
+.movie-title {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.5s;
+    font-weight: bold;
+}
+
+.movie:hover .movie-title {
+    opacity: 1;
+}
+
+/* About 섹션 */
+.about-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.about-section h2 {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid black;
+}
+
+.about-section p {
+    column-count: 2;
+    column-gap: 40px;
+    column-rule: 1px solid gray;
+}
+
+/* 회원가입, 로그인 폼 스타일 */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    margin: 10px 0;
+    padding: 10px;
+    width: 300px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+@media (max-width: 480px) {
+    .nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .about-section p {
+        column-count: 1;
+        column-rule: none;
+    }
+
+    .header, .main-container,
+    .movies-section, .about-section {
+        width: 100%;
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+
+    .movies {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 800px) {
+    .header, .main-container,
+    .movies-section, .about-section {
+        width: 100%;
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+
+    .nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .movies {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    .movie-group {
+        width: 45%; /* 한 줄에 2개 들어오게 */
+        margin-bottom: 20px;
+        height: auto;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .about-section p {
+        column-count: 1;
+        column-rule: none;
+    }
+}
+
+@media (min-width: 801px) {
+    .header, .main-container {
+        width: 1020px;
+    }
+}
