@@ -28,7 +28,9 @@ body {
     position: absolute;
     top: 30px;
     left: 1020px;
-    animation: slideIn 2s forwards;
+    animation-name: slideIn;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
 }
 
 @keyframes slideIn {
@@ -43,6 +45,7 @@ body {
 .nav {
     width: 100%;
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     background-color: #333;
