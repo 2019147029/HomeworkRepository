@@ -14,37 +14,44 @@ body {
     align-items: flex-start;
     gap: 10px;
     padding-top: 20px;
-    margin-left: 0;
+    margin: 0 auto;
 }
 
-nav {
-    display: flex;
-    justify-content: flex-end;
-    gap: 15px;
-    padding: 10px;
-}
-
-.nav a {
-    text-decoration: none;
-    color: black;
-    font-weight: bold;
-}
 
 .header-text {
     font-size: 24px;
     font-weight: bold;
-    width: fit-content;
-    position: relative;
+    white-space: nowrap;
+    position: absolute;
+    top: 0;
+    left: 1020px;
     animation: slideIn 2s forwards;
 }
 
 @keyframes slideIn {
     0% {
-        transform: translateX(100%);
+        left: 1020px;
     }
     100% {
-        transform: translateX(0%);
+        left: 0;
     }
+}
+
+nav {
+    display: flex;
+    gap: 15px;
+    padding: 10px;
+}
+
+nav a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+nav a.active {
+    border-bottom: 2px solid red;
+    border-top: 2px solid red;
 }
 
 .main-container {
@@ -53,6 +60,7 @@ nav {
     display: flex;
     flex-direction: column;
     gap: 30px;
+    margin: 0 auto;
 }
 
 .movies-section {
