@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>인포밍 영화 정보 사이트</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-top">
+            <div class="header-title">인포밍 영화 정보 사이트입니다.</div>
+        </div>
+        <nav class="nav">
+            <a href="index.html" class="active">메인페이지</a>
+            <a href="login.html">로그인</a>
+            <a href="signup.html">회원가입</a>
+        </nav>
+    </header>
+
+    <main class="main-container">
+        <h2>Movies</h2>
+
+        <div class="filter-wrapper">
+            <div class="search-box">
+                <input type="text" placeholder="키워드를 입력하세요.">
+                <button>Filter results</button>
+            </div>
+        </div>
+
+        <div class="content-wrapper">
+            <aside class="sort-options">
+                <fieldset>
+                    <legend>정렬 기준</legend>
+                    <label><input type="radio" name="sort" value="rating-desc"> 평점 내림차순</label><br>
+                    <label><input type="radio" name="sort" value="rating-asc"> 평점 오름차순</label><br>
+                    <label><input type="radio" name="sort" value="release-desc"> 개봉 내림차순</label><br>
+                    <label><input type="radio" name="sort" value="release-asc"> 개봉 오름차순</label>
+                </fieldset>
+            </aside>
+
+            <section class="movies" id="movie-list">
+                <!-- 여기에 JS로 영화 카드 삽입 예정 -->
+                <div class="movie">
+                    <img src="https://m.media-amazon.com/images/I/91QnOrCEokL._AC_UF1000,1000_QL80_.jpg" alt="Toy Story">
+                    <div class="movie-title">Toy Story</div>
+                    <div class="movie-date">1995-10-30</div>
+                </div>
+                <div class="movie">
+                    <img src="https://m.media-amazon.com/images/I/81hWg6Vt-WL.jpg" alt="The Muppet Collection">
+                    <div class="movie-title">The Muppet Collection</div>
+                    <div class="movie-date">1996-02-10</div>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+</html>
