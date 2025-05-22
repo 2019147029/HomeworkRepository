@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>인프밍 영화 정보 사이트</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-top">
+        <div class="header-title">인프밍 영화 정보 사이트입니다.</div>
+      </div>
+      <nav class="nav">
+        <a href="index.html" class="active">메인페이지</a>
+        <a href="login.html">로그인</a>
+        <a href="signup.html">회원가입</a>
+      </nav>
+    </header>
+
+    <main class="main-container">
+      <h2>Movies</h2>
+
+      <div class="filter-wrapper">
+        <div class="search-box">
+          <input type="text" id="search" placeholder="키워드를 입력하세요." />
+          <button onclick="filterMovies()">Filter results</button>
+        </div>
+      </div>
+
+      <div class="content-wrapper">
+        <aside class="sort-options">
+          <fieldset>
+            <legend>정렬 기준</legend>
+            <label><input type="radio" name="sort" value="rating-desc" checked /> 평점 내림차순</label><br />
+            <label><input type="radio" name="sort" value="rating-asc" /> 평점 오름차순</label><br />
+            <label><input type="radio" name="sort" value="release-desc" /> 개봉 내림차순</label><br />
+            <label><input type="radio" name="sort" value="release-asc" /> 개봉 오름차순</label>
+          </fieldset>
+        </aside>
+
+        <section class="movies" id="movie-list">
+          <!-- 영화 카드 동적 삽입 -->
+        </section>
+      </div>
+    </main>
+
+    <script>
+      let moviesData = [];
+      let filteredData = [];
+      let startIndex = 0;
+      const batchSize = 10;
+
+      async function fetchMovies() {
+        const res = await fetch("product.json");
+        const data = await res.json();
+        moviesData = data;
+        filteredData = [...moviesData];
+        renderNextBatch();
+
+        // 정렬 radio 버튼 변경 시 자동 정렬
+        document.querySelectorAll('input[name="sort"]').forEach((radio) => {
+          radio.addEventListener("change", filterMovies);
+        });
+      }
+
+      function renderNextBatch() {
+        const container = document.getElementById("movie-list");
+        const endIndex = startIndex + batchSize;
+        const currentBatch = filteredData.slice(startIndex, endIndex);
+
+        currentBatch.forEach((movie) => {
+          const card = document.createElement("div");
+          card.className = "movie";
+
+          card.innerHTML = `
+            <div class="poster-wrapper">
+              <img src="${movie.image_url}" alt="${movie.title}">
+              <div class="overview">${movie.overview}</div>
+            </div>
+            <div class="movie-title">${movie.title}</div>
+            <div class="movie-date">${movie.release_date}</div>
+            <div class="movie-rating">⭐ ${movie.rate}/10</div>
+          `;
+          container.appendChild(card);
+        });
+
+        startIndex = endIndex;
+      }
+
+      function filterMovies() {
+        const keyword = document.getElementById("search").value.toLowerCase();
+        const sortValue = document.querySelector('input[name="sort"]:checked').value;
+
+        // 키워드 필터
+        filteredData = moviesData.filter((m) =>
+          m.title.toLowerCase().includes(keyword)
+        );
+
+        // 정렬 적용
+        if (sortValue === "rating-desc") {
+          filteredData.sort((a, b) => b.rate - a.rate);
+        } else if (sortValue === "rating-asc") {
+          filteredData.sort((a, b) => a.rate - b.rate);
+        } else if (sortValue === "release-desc") {
+          filteredData.sort(
+            (a, b) => new Date(b.release_date) - new Date(a.release_date)
+          );
+        } else if (sortValue === "release-asc") {
+          filteredData.sort(
+            (a, b) => new Date(a.release_date) - new Date(b.release_date)
+          );
+        }
+
+        // 초기화 후 다시 렌더링
+        document.getElementById("movie-list").innerHTML = "";
+        startIndex = 0;
+        renderNextBatch();
+      }
+
+      window.addEventListener("scroll", () => {
+        if (
+          window.innerHeight + window.scrollY >=
+          document.body.offsetHeight - 100
+        ) {
+          renderNextBatch();
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", fetchMovies);
+    </script>
+  </body>
+</html>
