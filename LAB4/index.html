@@ -1,166 +1,115 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <title>인포밍 영화 정보 사이트</title>
-    <link rel="stylesheet" href="main.css" />
-  </head>
-  <body>
-    <header class="header">
-      <div class="header-top">
-        <div class="header-title">인포밍 영화 정보 사이트입니다.</div>
-      </div>
-      <nav class="nav">
-        <a href="index.html" class="active">메인페이지</a>
-        <a href="login.html">로그인</a>
-        <a href="signup.html">회원가입</a>
-      </nav>
-    </header>
+<head>
+  <meta charset="UTF-8">
+  <title>인포밍 영화 정보 사이트</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+<header class="header">
+  <div class="header-top">
+    <div class="header-title">인포밍 영화 정보 사이트입니다.</div>
+  </div>
+  <nav class="nav">
+    <a href="index.html" class="active">메인페이지</a>
+    <a href="login.html">로그인</a>
+    <a href="signup.html">회원가입</a>
+  </nav>
+</header>
 
-    <main class="main-container">
-      <h2>Movies</h2>
+<main class="main-container">
+  <h2>Movies</h2>
 
-      <div class="filter-wrapper">
-        <div class="search-box">
-          <input type="text" id="search" placeholder="키워드를 입력하세요." />
-          <button onclick="filterMovies()">Filter results</button>
-        </div>
-      </div>
+  <div class="filter-wrapper">
+    <div class="search-box">
+      <input type="text" id="search" placeholder="키워드를 입력하세요.">
+      <button onclick="filterMovies()">Filter results</button>
+    </div>
+  </div>
 
-      <div class="content-wrapper">
-        <aside class="sort-options">
-          <fieldset>
-            <legend>정렬 기준</legend>
-            <label
-              ><input type="radio" name="sort" value="rating-desc" checked />
-              평점 내림차순</label
-            ><br />
-            <label
-              ><input type="radio" name="sort" value="rating-asc" /> 평점
-              오름차순</label
-            ><br />
-            <label
-              ><input type="radio" name="sort" value="release-desc" /> 개봉
-              내림차순</label
-            ><br />
-            <label
-              ><input type="radio" name="sort" value="release-asc" /> 개봉
-              오름차순</label
-            >
-          </fieldset>
-        </aside>
+  <div class="content-wrapper">
+    <aside class="sort-options">
+      <fieldset>
+        <legend>정렬 기준</legend>
+        <label><input type="radio" name="sort" value="rating-desc" checked> 평점 내림차순</label><br>
+        <label><input type="radio" name="sort" value="rating-asc"> 평점 오름차순</label><br>
+        <label><input type="radio" name="sort" value="release-desc"> 개봉 내림차순</label><br>
+        <label><input type="radio" name="sort" value="release-asc"> 개봉 오름차순</label>
+      </fieldset>
+    </aside>
 
-        <section class="movies" id="movie-list">
-          <!-- JS로 동적으로 영화 카드 삽입 예정 -->
-          <!-- 예시 카드 -->
-          <div class="movie">
-            <div class="poster-wrapper" style="position: relative">
-              <img
-                src="https://m.media-amazon.com/images/I/91QnOrCEokL._AC_UF1000,1000_QL80_.jpg"
-                alt="Toy Story"
-              />
-              <div
-                class="overview"
-                style="
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  right: 0;
-                  bottom: 0;
-                  background: rgba(0, 0, 0, 0.8);
-                  color: white;
-                  padding: 10px;
-                  font-size: 13px;
-                  display: none;
-                  overflow-y: auto;
-                "
-              >
-                Led by Woody, Andy's toys live happily in his room until Andy's
-                birthday brings Buzz Lightyear onto the scene...
-              </div>
-            </div>
-            <div class="movie-title">Toy Story</div>
-            <div class="movie-date">1995-10-30</div>
-            <div class="movie-rating">⭐ 7.7/10</div>
+    <section class="movies" id="movie-list">
+      <!-- 영화 카드 동적 삽입 -->
+    </section>
+  </div>
+</main>
+
+<script>
+  let moviesData = [];
+  let filteredData = [];
+  let startIndex = 0;
+  const batchSize = 10;
+
+  async function fetchMovies() {
+    const res = await fetch("product.json");
+    const data = await res.json();
+    moviesData = data;
+    filteredData = [...moviesData];
+    renderNextBatch();
+  }
+
+  function renderNextBatch() {
+    const container = document.getElementById("movie-list");
+    const endIndex = startIndex + batchSize;
+    const currentBatch = filteredData.slice(startIndex, endIndex);
+
+    currentBatch.forEach(movie => {
+      const card = document.createElement("div");
+      card.className = "movie";
+
+      card.innerHTML = `
+          <div class="poster-wrapper">
+            <img src="${movie.image_url}" alt="${movie.title}">
+            <div class="overview">${movie.overview}</div>
           </div>
-        </section>
-      </div>
-    </main>
-
-    <script>
-      let moviesData = [];
-
-      // JSON에서 영화 정보 불러오기
-      fetch("product.json")
-        .then((response) => response.json())
-        .then((data) => {
-          moviesData = data;
-          renderMovies(moviesData);
-        });
-
-      function renderMovies(movies) {
-        const container = document.getElementById("movie-list");
-        container.innerHTML = ""; // 초기화
-
-        movies.forEach((movie) => {
-          const card = document.createElement("div");
-          card.className = "movie";
-
-          const wrapper = document.createElement("div");
-          wrapper.className = "poster-wrapper";
-          wrapper.style.position = "relative";
-
-          const img = document.createElement("img");
-          img.src = movie.image_url;
-          img.alt = movie.title;
-
-          const overview = document.createElement("div");
-          overview.className = "overview";
-          overview.innerText = movie.overview;
-          overview.style.cssText = `
-          position: absolute;
-          top: 0; left: 0; right: 0; bottom: 0;
-          background: rgba(0,0,0,0.8);
-          color: white;
-          padding: 10px;
-          font-size: 13px;
-          display: none;
-          overflow-y: auto;
+          <div class="movie-title">${movie.title}</div>
+          <div class="movie-date">${movie.release_date}</div>
+          <div class="movie-rating">⭐ ${movie.rate}/10</div>
         `;
+      container.appendChild(card);
+    });
 
-          // Hover 이벤트 처리
-          wrapper.addEventListener(
-            "mouseenter",
-            () => (overview.style.display = "block")
-          );
-          wrapper.addEventListener(
-            "mouseleave",
-            () => (overview.style.display = "none")
-          );
+    startIndex = endIndex;
+  }
 
-          wrapper.appendChild(img);
-          wrapper.appendChild(overview);
+  function filterMovies() {
+    const keyword = document.getElementById("search").value.toLowerCase();
+    const sortValue = document.querySelector('input[name="sort"]:checked').value;
 
-          const title = document.createElement("div");
-          title.className = "movie-title";
-          title.innerText = movie.title;
+    filteredData = moviesData.filter(m => m.title.toLowerCase().includes(keyword));
 
-          const date = document.createElement("div");
-          date.className = "movie-date";
-          date.innerText = movie.release_date;
+    if (sortValue === "rating-desc") {
+      filteredData.sort((a, b) => b.rate - a.rate);
+    } else if (sortValue === "rating-asc") {
+      filteredData.sort((a, b) => a.rate - b.rate);
+    } else if (sortValue === "release-desc") {
+      filteredData.sort((a, b) => new Date(b.release_date) - new Date(a.release_date));
+    } else if (sortValue === "release-asc") {
+      filteredData.sort((a, b) => new Date(a.release_date) - new Date(b.release_date));
+    }
 
-          const rating = document.createElement("div");
-          rating.className = "movie-rating";
-          rating.innerText = `⭐ ${movie.rate}/10`;
+    document.getElementById("movie-list").innerHTML = "";
+    startIndex = 0;
+    renderNextBatch();
+  }
 
-          card.appendChild(wrapper);
-          card.appendChild(title);
-          card.appendChild(date);
-          card.appendChild(rating);
+  window.addEventListener("scroll", () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+      renderNextBatch();
+    }
+  });
 
-          container.appendChild(card);
-        });
-      }
-    </script>
-  </body>
+  document.addEventListener("DOMContentLoaded", fetchMovies);
+</script>
+</body>
 </html>
